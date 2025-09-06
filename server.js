@@ -8,7 +8,11 @@ const PORT = 3000;
 
 // === Middleware ===
 app.use(bodyParser.json()); // to parse JSON body
-
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 // === Connect to MongoDB ===
 // Replace this with your MongoDB URI
 const MONGODB_URI = 'mongodb+srv://backendmongodb:u716zNded4JaS4QM@cluster0.drxopbp.mongodb.net/';
@@ -31,11 +35,6 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // === API Route ===
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
 
 app.post('/api/users', async (req, res) => {
   try {
