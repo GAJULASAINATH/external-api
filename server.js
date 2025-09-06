@@ -31,6 +31,12 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // === API Route ===
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.post('/api/users', async (req, res) => {
   try {
     const { name, email, phone } = req.body;
