@@ -21,21 +21,27 @@ mongoose.connect(MONGODB_URI, {
 .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // === Define a Schema and Model ===
-const DataSchema = new mongoose.Schema({
-  content: mongoose.Schema.Types.Mixed // can store any kind of data
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: String
 });
 
-const DataModel = mongoose.model('Data', DataSchema);
+
+const User = mongoose.model('User', userSchema);
 
 // === API Route ===
-app.post('/api/data', async (req, res) => {
+app.post('/api/users', async (req, res) => {
   try {
-    const newData = new DataModel({ content: req.body });
-    await newData.save();
-    res.status(201).json({ message: 'Data saved successfully' });
+    const { name, email, phone } = req.body;
+
+    const newUser = new User({ name, email, phone });
+    await newUser.save();
+
+    res.status(201).json({ message: 'User saved successfully' });
   } catch (err) {
-    console.error('❌ Error saving data:', err);
-    res.status(500).json({ error: 'Failed to save data' });
+    console.error('❌ Error saving user:', err);
+    res.status(500).json({ error: 'Failed to save user' });
   }
 });
 
